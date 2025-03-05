@@ -88,4 +88,14 @@ class TaskController extends Controller
 
         return response()->json(['message' => 'Task assigned successfully']);
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function tasksGroupedByStatus(): JsonResponse
+    {
+        $tasks = $this->taskService->getTasksGroupedByStatus();
+        return response()->json(['tasks' => $tasks]);
+    }
+
 }

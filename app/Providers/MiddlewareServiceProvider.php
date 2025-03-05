@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\ThrottleTaskCreation;
 use Illuminate\Support\ServiceProvider;
 
 class MiddlewareServiceProvider extends ServiceProvider
@@ -19,6 +20,7 @@ class MiddlewareServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app['router']->aliasMiddleware('your.middleware.key', ThrottleTaskCreation::class);
     }
+
 }

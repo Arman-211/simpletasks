@@ -62,4 +62,12 @@ class TaskService
         $task->employees()->attach($employee);
     }
 
+    /**
+     * @return Collection
+     */
+    public function getTasksGroupedByStatus(): Collection
+    {
+        return Task::with('employees')->get()->groupBy('status');
+    }
+
 }
