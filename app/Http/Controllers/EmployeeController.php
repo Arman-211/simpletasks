@@ -7,6 +7,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Services\EmployeeService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class EmployeeController extends Controller
@@ -94,7 +95,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee): EmployeeResource
     {
-        return new EmployeeResource($employee);
+        return new EmployeeResource($this->employeeService->getEmployeeById($employee));
     }
 
     /**
@@ -158,4 +159,22 @@ class EmployeeController extends Controller
     {
         return $this->employeeService->deleteEmployee($id);
     }
+
+    /**
+     * @param Request $request
+     * @param Employee $employee
+     * @return JsonResponse
+     */
+    public function assignRole(Request $request, Employee $employee): JsonResponse
+    {
+        $request->validate([
+            'roles' => 'required|array',
+            'roles.*' => 'exists:roles,id',
+        ]);
+
+        $employee->roles()->sync($request->roles);
+
+        return response()->json(['message' => 'Роли обновлены']);
+    }
+
 }

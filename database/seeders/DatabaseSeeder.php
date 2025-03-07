@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Employee;
+use App\Models\Role;
 use App\Models\Task;
 use App\Models\User;
 
@@ -20,6 +21,11 @@ class DatabaseSeeder extends Seeder
 
         Employee::factory(20)->create();
         Task::factory(200)->create();
+
+        Role::insert([
+            ['name' => 'Программист'],
+            ['name' => 'Менеджер']
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',

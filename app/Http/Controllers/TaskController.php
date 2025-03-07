@@ -29,21 +29,80 @@ class TaskController extends Controller
     /**
      * @OA\Get(
      *     path="/api/tasks",
-     *     summary="Get all tasks",
+     *     summary="Получить список всех задач",
+     *     description="Возвращает список задач с возможностью фильтрации и сортировки.",
      *     tags={"Tasks"},
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="Фильтр по статусу задачи",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="employee_id",
+     *         in="query",
+     *         description="Фильтр по ID сотрудника, назначенного на задачу",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="date_from",
+     *         in="query",
+     *         description="Дата начала диапазона для фильтрации (формат: YYYY-MM-DD)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="date_to",
+     *         in="query",
+     *         description="Дата окончания диапазона для фильтрации (формат: YYYY-MM-DD)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_by",
+     *         in="query",
+     *         description="Поле для сортировки (например, 'created_at')",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_direction",
+     *         in="query",
+     *         description="Направление сортировки (asc или desc)",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="List of all tasks",
+     *         description="Список всех задач",
      *         @OA\JsonContent(
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/Task")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Некорректные параметры запроса",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invalid request parameters")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Внутренняя ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Server error")
+     *         )
      *     )
      * )
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return TaskResource::collection($this->taskService->getAllTasks());
+        $filters = $request->only(['status', 'employee_id', 'date_from', 'date_to', 'sort_by', 'sort_direction']);
+
+        return TaskResource::collection($this->taskService->getAllTasks($filters));
     }
 
     /**
@@ -129,7 +188,7 @@ class TaskController extends Controller
      */
     public function show(Task $task): TaskResource
     {
-        return new TaskResource($task->load('employees'));
+        return new TaskResource($this->taskService->getTaskById($task));
     }
 
     /**

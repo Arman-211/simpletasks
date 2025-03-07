@@ -28,6 +28,7 @@ class EmployeeResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
         ];
     }
 }

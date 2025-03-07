@@ -205,11 +205,74 @@
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Get all tasks",
+                "summary": "Получить список всех задач",
+                "description": "Возвращает список задач с возможностью фильтрации и сортировки.",
                 "operationId": "471d938a3bfaeb6fbd981d7c3e2728b0",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Фильтр по статусу задачи",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "employee_id",
+                        "in": "query",
+                        "description": "Фильтр по ID сотрудника, назначенного на задачу",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "description": "Дата начала диапазона для фильтрации (формат: YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "description": "Дата окончания диапазона для фильтрации (формат: YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "description": "Поле для сортировки (например, 'created_at')",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "Направление сортировки (asc или desc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "List of all tasks",
+                        "description": "Список всех задач",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -217,6 +280,38 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Task"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid request parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server error"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }

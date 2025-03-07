@@ -13,7 +13,7 @@ class EmployeeService
      */
     public function getAllEmployees(): Collection
     {
-        return Employee::all();
+        return Employee::all()->load('roles');
     }
 
     /**
@@ -45,5 +45,14 @@ class EmployeeService
     {
         $employee->delete();
         return response()->json(['message' => 'Employee deleted successfully'], Response::HTTP_OK);
+    }
+
+    /**
+     * @param Employee $employee
+     * @return Employee
+     */
+    public function getEmployeeById(Employee $employee): Employee
+    {
+        return $employee->load('roles');
     }
 }
