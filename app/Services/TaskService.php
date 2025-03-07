@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Employee;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +19,11 @@ class TaskService
         return Task::with('employees')->get();
     }
 
-    public function createTask(array $data)
+    /**
+     * @param array $data
+     * @return Task|Model
+     */
+    public function createTask(array $data): Model|Task
     {
         return Task::query()->create($data);
     }

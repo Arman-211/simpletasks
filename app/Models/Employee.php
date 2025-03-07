@@ -10,7 +10,6 @@ class Employee extends Model
 {
     use HasFactory;
 
-    public int $id;
     protected $fillable = ['name', 'email', 'status'];
 
     /**

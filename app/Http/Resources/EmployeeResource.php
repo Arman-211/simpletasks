@@ -15,8 +15,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class EmployeeResource extends JsonResource
 {
-
-
     /**
      * @param Request $request
      * @return array
@@ -28,8 +26,8 @@ class EmployeeResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'status' => $this->status,
-            'created_at' => $this->created_at->toIso8601String(),
-            'updated_at' => $this->updated_at->toIso8601String(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

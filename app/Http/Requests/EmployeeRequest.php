@@ -22,7 +22,7 @@ class EmployeeRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email,' . $this->route('employee'),
-            'status' => 'required|in:working,on_vacation',
-            ];
+            'status' => 'required|string|in:on_vacation,active,inactive',
+        ];
     }
 }

@@ -20,7 +20,7 @@ class MiddlewareServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app['router']->aliasMiddleware('your.middleware.key', ThrottleTaskCreation::class);
+        $this->app['router']->aliasMiddleware('throttle.tasks', ThrottleTaskCreation::class);
     }
 
 }
